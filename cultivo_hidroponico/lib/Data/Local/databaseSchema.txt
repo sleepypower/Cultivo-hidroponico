@@ -1,0 +1,14 @@
+create table Users (mail varchar, first_name varchar(30) not null, last_name varchar(30) not null, password varchar(30) not null, primary key (mail));
+create table Condition (id serial, condition_name varchar not null unique, primary key (id));
+create table Sensor(id serial, );
+create table Sensor_data(
+time date, 
+temperature double, 
+humidity double, 
+conductivity double, 
+ph double, 
+light_level double, 
+id_sensor, mail_user, 
+primary key (time, id_sensor), 
+foreign key (id_sensor) references sensor(id), 
+foreign key (mail_user) references Usesr(mail));

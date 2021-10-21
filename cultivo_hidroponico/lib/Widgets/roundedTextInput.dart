@@ -15,13 +15,15 @@ class TextRoundedForm extends StatelessWidget {
   ///
   /// If max len is set to 0, then there is no maximum length of input characters.
   TextRoundedForm({@required this.text,
-    @required this.textController, required Key key, int maxLen = 30, FormFieldValidator<String>? this.validator}) {
+    @required this.textController, required Key key, int maxLen = 30, required FormFieldValidator<String>? this.validator}) {
     if (maxLen == 0) {
       doMaxLen = MaxLengthEnforcement.none;
     } else {
       doMaxLen = MaxLengthEnforcement.enforced;
     }
   }
+
+
 
 
   @override
@@ -33,8 +35,7 @@ class TextRoundedForm extends StatelessWidget {
           child: TextFormField(
               maxLength: maxLen,
               maxLengthEnforcement: doMaxLen,
-              autovalidateMode: AutovalidateMode.always,
-
+              autovalidateMode: AutovalidateMode.disabled,
               key: key,
               controller: textController,
               decoration: InputDecoration(

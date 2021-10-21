@@ -6,8 +6,16 @@ import 'package:get/get.dart';
 
 class AuthenticationController extends GetxController {
   final _internalStorage = new FlutterSecureStorage();
-  var h = "Hey".obs;
   var database = LocalDataSource();
+  var _loading = false.obs;
+
+  bool get loading {
+    return _loading.value;
+  }
+
+  set loading(bool newVal) {
+    _loading.value = newVal;
+  }
 
   Future<bool> login(User user) async {
     database.getUserInfo("dxaj");
@@ -23,11 +31,15 @@ class AuthenticationController extends GetxController {
   }
 
   Future<bool> signUp(User user) async {
+    _loading.value = true;
+    print(_loading.value);
+    print("Im here!");
     //await _internalStorage.write(key: "logged", value: "false");
 
     bool signedUp = await database.signUser(user);
 
     if (!signedUp) {
+      _loading.value = false;
       return Future.value(false);
     }
     // Keep the user logged
@@ -37,6 +49,7 @@ class AuthenticationController extends GetxController {
     await _internalStorage.write(key: "mail", value: user.mail);
     await _internalStorage.write(key: "password", value: user.password);*/
 
+    _loading.value = false;
     return Future.value(true);
   }
 }

@@ -23,11 +23,23 @@ class TextRoundedForm extends StatelessWidget {
     }
   }
 
+  IconButton _clearIcon = IconButton(icon: Icon(null), onPressed: () {},);
 
+  void placeClearIcon(String text) {
+    if (text == "") {
+      _clearIcon = null as IconButton;
+    } else {
+      _clearIcon =  IconButton(
+        onPressed: textController.clear,
+        icon: Icon(Icons.clear,
+            size: SizeConfig.blockSizeHorizontal! * 3));
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    //textController.addListener()
     return Container(
       decoration: BoxDecoration(),
       child: SizedBox(
@@ -46,13 +58,20 @@ class TextRoundedForm extends StatelessWidget {
                   filled: true,
                   hintStyle: TextStyle(color: Color(0xFF808080)),
                   hintText: "${this.text}",
-                  suffixIcon: IconButton(
+                fillColor: Colors.white70,
+                  suffixIcon: textController.text != "" ?IconButton(
                     onPressed: textController.clear,
                     icon: Icon(Icons.clear,
                         size: SizeConfig.blockSizeHorizontal! * 3),
-                  ),
-                  fillColor: Colors.white70),
-              validator: validator)),
-    );
+                  ) : null
+              ),
+    validator: validator,
+    )));
   }
 }
+
+/*textController.text != "" ?IconButton(
+                    onPressed: textController.clear,
+                    icon: Icon(Icons.clear,
+                        size: SizeConfig.blockSizeHorizontal! * 3),
+                  ) : null)*/

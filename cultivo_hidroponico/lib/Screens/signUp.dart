@@ -20,16 +20,31 @@ class _SignUpState extends State<SignUp> {
 
   var _userLastNameController = TextEditingController();
 
-  final authenticationController = Get.find<AuthenticationController>();
+  AuthenticationController authenticationController = Get.find();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _mailTaken = false;
+  String _mailTakenResponse = "";
+
+  Future<void> _verifyEmail(String mail) async {
+    User user = User(mail: mail, firstName: "", lastName: "", password: "");
+    await Future.delayed(Duration(seconds: 5));
+    bool exists = await authenticationController.database.checkUserExists(user);
+    if (exists) {
+      _mailTaken = true;
+      _mailTakenResponse = "This mail is taken. Try another.";
+    } else {
+      _mailTaken = false;
+      _mailTakenResponse = "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(title: Text('Programación Móvil 2020'),),
         backgroundColor: Color(0xff32B768),
         body: GestureDetector(
           onTap: () {
@@ -131,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                                     if (!value!.contains("@")) {
                                       return "Please enter a valid email";
                                     } else {
-                                      return null;
+                                      return _mailTakenResponse != "" ? _mailTakenResponse : null;
                                     }
                                   }),
                               TextRoundedForm(
@@ -145,34 +160,32 @@ class _SignUpState extends State<SignUp> {
                                       return null;
                                     }
                                   }),
-                              TextButton(
+                              GetX<AuthenticationController>(
+                                  builder: (authController) {
+                                print("Auth val is ${authController.loading}");
+                                String buttonText = "JOIN";
+
+                                if (authController.loading) {
+                                  buttonText = "";
+                                } else {
+                                  buttonText = "Join";
+                                }
+                                return ElevatedButton.icon(
                                   key: Key('signUpSubmit'),
-                                  child: Text("Join".toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.white)),
-                                  style: ButtonStyle(
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.transparent),
-                                      padding: MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.fromLTRB(40, 12, 40, 12)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Color(0xff32B768)),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              side: BorderSide(color: Color(0xff32B768))))),
                                   onPressed: () async {
                                     // Dismiss the keyboard
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
+                                    authController.loading = true;
 
                                     final form = _formKey.currentState;
                                     form!.save();
 
+                                    await _verifyEmail(
+                                        _userEmailController.text);
+                                    print("not validated yet!");
                                     if (form.validate()) {
+                                      print("validated!");
                                       User user = User(
                                           mail: _userEmailController.text,
                                           firstName:
@@ -182,13 +195,45 @@ class _SignUpState extends State<SignUp> {
                                           password:
                                               _userPasswordController.text);
                                       bool successfulSignUp =
-                                          await authenticationController.signUp(user);
-                                      await authenticationController.database.checkUserExists(user);
-                                      /*if (successfulSignUp) {
+                                          await authController
+                                              .signUp(user);
+                                      await authController.database
+                                          .checkUserExists(user);
+                                      if (successfulSignUp) {
                                         Get.offAllNamed("/LogIn");
-                                      }*/
+                                      }
                                     }
-                                  }),
+                                    authController.loading = false;
+                                  },
+                                  style: ButtonStyle(
+                                      overlayColor: MaterialStateProperty.all<Color>(
+                                          Colors.transparent),
+                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.fromLTRB(40, 12, 40, 12)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Color(0xff32B768)),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              side: BorderSide(
+                                                  color: Color(0xff32B768))))),
+                                  icon: authController.loading
+                                      ? Container(
+                                          width: 24,
+                                          height: 24,
+                                          padding: const EdgeInsets.all(2.0),
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 3,
+                                          ),
+                                        )
+                                      : const Icon(null),
+                                  label: Text('$buttonText'),
+                                );
+                              }),
                               SizedBox(
                                 height: SizeConfig.blockSizeVertical! * 1,
                               ),
@@ -205,3 +250,61 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
+
+/*
+TextButton(
+key: Key('signUpSubmit'),
+child: Text("Join".toUpperCase(),
+style: TextStyle(
+fontSize: 14, color: Colors.white)),
+style: ButtonStyle(
+overlayColor:
+MaterialStateProperty.all<Color>(
+Colors.transparent),
+padding: MaterialStateProperty.all<
+    EdgeInsets>(
+EdgeInsets.fromLTRB(40, 12, 40, 12)),
+backgroundColor:
+MaterialStateProperty.all<Color>(
+Color(0xff32B768)),
+shape: MaterialStateProperty.all<
+    RoundedRectangleBorder>(
+RoundedRectangleBorder(
+borderRadius:
+BorderRadius.circular(10.0),
+side: BorderSide(
+color: Color(0xff32B768))))),
+onPressed: () async {
+// Dismiss the keyboard
+FocusScope.of(context)
+.requestFocus(FocusNode());
+
+final form = _formKey.currentState;
+form!.save();
+
+
+await _verifyEmail(
+_userEmailController.text);
+
+
+if (form.validate()) {
+User user = User(
+mail: _userEmailController.text,
+firstName:
+_userFirstNameController.text,
+lastName:
+_userLastNameController.text,
+password:
+_userPasswordController.text);
+bool successfulSignUp =
+await authenticationController
+    .signUp(user);
+await authenticationController.database
+    .checkUserExists(user);
+*/
+/*if (successfulSignUp) {
+                                        Get.offAllNamed("/LogIn");
+                                      }*/ /*
+
+}
+}),*/

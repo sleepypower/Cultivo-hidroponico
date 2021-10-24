@@ -5,6 +5,7 @@ import 'package:cultivo_hidroponico/Widgets/roundedTextInput.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -97,86 +98,79 @@ class _SignUpState extends State<SignUp> {
                               border: Border.all(color: Color(0xFF707070)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: SizeConfig.blockSizeVertical! * 1,
-                              ),
-                              Text(
-                                'Sign Up',
-                                textDirection: TextDirection.ltr,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF2E2D2D),
-                                  fontSize: 35,
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  height: SizeConfig.blockSizeVertical! * 1,
                                 ),
-                              ),
-                              TextRoundedForm(
-                                  text: "First Name",
-                                  maxLen: 30,
-                                  textController: _userFirstNameController,
-                                  key: Key("SignUpName"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Please enter a First Name";
-                                    } else {
-                                      return null;
-                                    }
-                                  }),
-                              TextRoundedForm(
-                                  text: "Last Name",
-                                  maxLen: 30,
-                                  textController: _userLastNameController,
-                                  key: Key("SignUpLastName"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Please enter a Last Name";
-                                    } else {
-                                      return null;
-                                    }
-                                  }),
-                              TextRoundedForm(
-                                  text: "Email",
-                                  textController: _userEmailController,
-                                  key: Key("loginMailText"),
-                                  validator: (value) {
-                                    if (!value!.contains("@")) {
-                                      return "Please enter a valid email";
-                                    } else {
-                                      return _mailTakenResponse != "" ? _mailTakenResponse : null;
-                                    }
-                                  }),
-                              TextRoundedForm(
-                                  text: "Password",
-                                  textController: _userPasswordController,
-                                  key: Key("loginPasswordText"),
-                                  validator: (value) {
-                                    if (value!.length < 6) {
-                                      return "Password length must be longer than 6 characters";
-                                    } else {
-                                      return null;
-                                    }
-                                  }),
-                              GetX<AuthenticationController>(
-                                  builder: (authController) {
-                                print("Auth val is ${authController.loading}");
-                                String buttonText = "JOIN";
-
-                                if (authController.loading) {
-                                  buttonText = "";
-                                } else {
-                                  buttonText = "Join";
-                                }
-                                return ElevatedButton.icon(
+                                Text(
+                                  'Sign Up',
+                                  textDirection: TextDirection.ltr,
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF2E2D2D),
+                                    fontSize: 35,
+                                  ),
+                                ),
+                                TextRoundedForm(
+                                    text: "First Name",
+                                    maxLen: 30,
+                                    textController: _userFirstNameController,
+                                    key: Key("SignUpName"),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please enter a First Name";
+                                      } else {
+                                        return null;
+                                      }
+                                    }),
+                                TextRoundedForm(
+                                    text: "Last Name",
+                                    maxLen: 30,
+                                    textController: _userLastNameController,
+                                    key: Key("SignUpLastName"),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please enter a Last Name";
+                                      } else {
+                                        return null;
+                                      }
+                                    }),
+                                TextRoundedForm(
+                                    text: "Email",
+                                    textController: _userEmailController,
+                                    key: Key("loginMailText"),
+                                    validator: (value) {
+                                      if (!value!.contains("@")) {
+                                        return "Please enter a valid email";
+                                      } else {
+                                        return _mailTakenResponse != ""
+                                            ? _mailTakenResponse
+                                            : null;
+                                      }
+                                    }),
+                                TextRoundedForm(
+                                    text: "Password",
+                                    textController: _userPasswordController,
+                                    key: Key("loginPasswordText"),
+                                    validator: (value) {
+                                      if (value!.length < 6) {
+                                        return "Password length must be longer than 6 characters";
+                                      } else {
+                                        return null;
+                                      }
+                                    }),
+                                GestureDetector(
                                   key: Key('signUpSubmit'),
-                                  onPressed: () async {
+                                  onTap: () async {
                                     // Dismiss the keyboard
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
-                                    authController.loading = true;
+                                    authenticationController.loading = true;
 
                                     final form = _formKey.currentState;
                                     form!.save();
@@ -195,49 +189,54 @@ class _SignUpState extends State<SignUp> {
                                           password:
                                               _userPasswordController.text);
                                       bool successfulSignUp =
-                                          await authController
+                                          await authenticationController
                                               .signUp(user);
-                                      await authController.database
+                                      await authenticationController.database
                                           .checkUserExists(user);
                                       if (successfulSignUp) {
                                         Get.offAllNamed("/LogIn");
                                       }
                                     }
-                                    authController.loading = false;
+                                    authenticationController.loading = false;
                                   },
-                                  style: ButtonStyle(
-                                      overlayColor: MaterialStateProperty.all<Color>(
-                                          Colors.transparent),
-                                      padding: MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.fromLTRB(40, 12, 40, 12)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Color(0xff32B768)),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              side: BorderSide(
-                                                  color: Color(0xff32B768))))),
-                                  icon: authController.loading
-                                      ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          padding: const EdgeInsets.all(2.0),
-                                          child:
-                                              const CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 3,
-                                          ),
-                                        )
-                                      : const Icon(null),
-                                  label: Text('$buttonText'),
-                                );
-                              }),
-                              SizedBox(
-                                height: SizeConfig.blockSizeVertical! * 1,
-                              ),
-                            ],
+                                  child: GetX<AuthenticationController>(
+                                      builder: (authController) {
+                                    print(
+                                        "Auth val is ${authController.loading}");
+                                    String buttonText = "JOIN";
+
+                                    if (authController.loading) {
+                                      buttonText = "";
+                                    } else {
+                                      buttonText = "Join";
+                                    }
+                                    return SizedBox(
+                                      width: SizeConfig.blockSizeVertical! * 17,
+                                      height: SizeConfig.blockSizeVertical! * 5,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Color(0xff32B768),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8))),
+                                          child: Center(
+                                              child: authController.loading
+                                                  ? CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                      strokeWidth: 3,
+                                                    )
+                                                  : Text(
+                                                      "Join",
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ))),
+                                    );
+                                  }),
+                                )
+                              ],
+                            ),
                           ),
                         )),
                   ),
@@ -251,60 +250,3 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-/*
-TextButton(
-key: Key('signUpSubmit'),
-child: Text("Join".toUpperCase(),
-style: TextStyle(
-fontSize: 14, color: Colors.white)),
-style: ButtonStyle(
-overlayColor:
-MaterialStateProperty.all<Color>(
-Colors.transparent),
-padding: MaterialStateProperty.all<
-    EdgeInsets>(
-EdgeInsets.fromLTRB(40, 12, 40, 12)),
-backgroundColor:
-MaterialStateProperty.all<Color>(
-Color(0xff32B768)),
-shape: MaterialStateProperty.all<
-    RoundedRectangleBorder>(
-RoundedRectangleBorder(
-borderRadius:
-BorderRadius.circular(10.0),
-side: BorderSide(
-color: Color(0xff32B768))))),
-onPressed: () async {
-// Dismiss the keyboard
-FocusScope.of(context)
-.requestFocus(FocusNode());
-
-final form = _formKey.currentState;
-form!.save();
-
-
-await _verifyEmail(
-_userEmailController.text);
-
-
-if (form.validate()) {
-User user = User(
-mail: _userEmailController.text,
-firstName:
-_userFirstNameController.text,
-lastName:
-_userLastNameController.text,
-password:
-_userPasswordController.text);
-bool successfulSignUp =
-await authenticationController
-    .signUp(user);
-await authenticationController.database
-    .checkUserExists(user);
-*/
-/*if (successfulSignUp) {
-                                        Get.offAllNamed("/LogIn");
-                                      }*/ /*
-
-}
-}),*/

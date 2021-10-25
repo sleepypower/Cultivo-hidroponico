@@ -170,17 +170,16 @@ class _SignUpState extends State<SignUp> {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     authenticationController.loading = true;
+                                    await Future.delayed(Duration(seconds: 1));
 
                                     final form = _formKey.currentState;
                                     form!.save();
-                                    setState() {
-
-                                    };
+                                    setState() {}
+                                    ;
                                     await _verifyEmail(
                                         _userEmailController.text);
-                                    print("not validated yet!");
+
                                     if (form.validate()) {
-                                      print("validated!");
                                       User user = User(
                                           mail: _userEmailController.text,
                                           firstName:
@@ -222,14 +221,18 @@ class _SignUpState extends State<SignUp> {
                                           child: Center(
                                               child: authController.loading
                                                   ? SizedBox(
-                                                height: SizeConfig.blockSizeVertical! * 3,
-                                                    width: SizeConfig.blockSizeVertical! * 3,
-                                                    child: CircularProgressIndicator(
+                                                      height: SizeConfig
+                                                              .blockSizeVertical! *
+                                                          3,
+                                                      width: SizeConfig
+                                                              .blockSizeVertical! *
+                                                          3,
+                                                      child:
+                                                          CircularProgressIndicator(
                                                         color: Colors.white,
                                                         strokeWidth: 2,
-
                                                       ),
-                                                  )
+                                                    )
                                                   : Text(
                                                       "Join",
                                                       style: GoogleFonts.roboto(
@@ -255,4 +258,3 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
-

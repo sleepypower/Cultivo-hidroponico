@@ -154,7 +154,9 @@ class _LogInState extends State<LogIn> {
                                           if (!value!.contains("@")) {
                                             return "Please enter a valid email";
                                           } else {
-                                            return _mailTakenResponse != "" ? _mailTakenResponse : null;
+                                            return _mailTakenResponse != ""
+                                                ? _mailTakenResponse
+                                                : null;
                                           }
                                         },
                                       ),
@@ -211,65 +213,81 @@ class _LogInState extends State<LogIn> {
                                               _userEmailController.text);
                                           if (form.validate()) {
                                             User user = User(
-                                                mail:
-                                                _userEmailController.text,
+                                                mail: _userEmailController.text,
                                                 firstName: "",
                                                 lastName: "",
                                                 password:
-                                                _userPasswordController
-                                                    .text);
-                                            bool logged = await authenticationController
-                                                .login(user);
+                                                    _userPasswordController
+                                                        .text);
+                                            bool logged =
+                                                await authenticationController
+                                                    .login(user);
                                             if (logged) {
                                               Get.off(Dashboard());
                                             } else {
-                                              _mailTakenResponse = "Email and password don't match";
+                                              _mailTakenResponse =
+                                                  "Email and password don't match";
                                               form.validate();
                                             }
                                           }
                                         },
                                         child: GetX<AuthenticationController>(
                                             builder: (authController) {
-                                              print(
-                                                  "Auth val is ${authController.loading}");
-                                              String buttonText = "Join";
+                                          print(
+                                              "Auth val is ${authController.loading}");
+                                          String buttonText = "Join";
 
-                                              if (authController.loading) {
-                                                buttonText = "";
-                                              } else {
-                                                buttonText = "Join";
-                                              }
-                                              return SizedBox(
-                                                width: SizeConfig.blockSizeVertical! * 13,
-                                                height: SizeConfig.blockSizeVertical! * 5,
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Color(0xff32B768),
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(20))),
-                                                    child: Center(
-                                                        child: authController.loading
+                                          if (authController.loading) {
+                                            buttonText = "";
+                                          } else {
+                                            buttonText = "Join";
+                                          }
+                                          return SizedBox(
+                                            width:
+                                                SizeConfig.blockSizeVertical! *
+                                                    13,
+                                            height:
+                                                SizeConfig.blockSizeVertical! *
+                                                    5,
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Color(0xff32B768),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                                child: Center(
+                                                    child:
+                                                        authController.loading
                                                             ? SizedBox(
-                                                          height: SizeConfig.blockSizeVertical! * 3,
-                                                          width: SizeConfig.blockSizeVertical! * 3,
-                                                          child: CircularProgressIndicator(
-                                                            color: Colors.white,
-                                                            strokeWidth: 2,
-
-                                                          ),
-                                                        )
+                                                                height: SizeConfig
+                                                                        .blockSizeVertical! *
+                                                                    3,
+                                                                width: SizeConfig
+                                                                        .blockSizeVertical! *
+                                                                    3,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  strokeWidth:
+                                                                      2,
+                                                                ),
+                                                              )
                                                             : Text(
-                                                          "Join",
-                                                          style: GoogleFonts.roboto(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                              FontWeight.bold,
-                                                              color: Colors.white),
-                                                        ))),
-                                              );
-                                            }),
+                                                                "Join",
+                                                                style: GoogleFonts.roboto(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ))),
+                                          );
+                                        }),
                                       ),
-
                                       SizedBox(
                                         height:
                                             SizeConfig.blockSizeVertical! * 1.5,

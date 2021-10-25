@@ -20,7 +20,8 @@ class AuthenticationController extends GetxController {
   Future<bool> login(User user) async {
     // check if user is in memory
     //database.getUserInfo(user.mail);
-
+    _loading.value = true;
+    await Future.delayed(Duration(seconds: 1));
     bool loggedIn = await database.logUser(user);
     /*if (loggedIn)
       {
@@ -28,13 +29,13 @@ class AuthenticationController extends GetxController {
         await _internalStorage.write(key: "mail", value: "true");
       }*/
     //print("Memory usermail ${localMail}, user signUp mail $mail, ${(localMail == mail)}");
+    _loading.value = false;_loading.value = false;
     return loggedIn;
   }
 
   Future<bool> signUp(User user) async {
     _loading.value = true;
     print(_loading.value);
-    print("Im here!");
     //await _internalStorage.write(key: "logged", value: "false");
 
     bool signedUp = await database.signUser(user);

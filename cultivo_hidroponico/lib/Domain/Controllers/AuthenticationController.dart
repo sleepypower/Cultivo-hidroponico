@@ -18,7 +18,8 @@ class AuthenticationController extends GetxController {
   }
 
   Future<bool> login(User user) async {
-    database.getUserInfo("dxaj");
+    // check if user is in memory
+    //database.getUserInfo(user.mail);
 
     bool loggedIn = await database.logUser(user);
     /*if (loggedIn)

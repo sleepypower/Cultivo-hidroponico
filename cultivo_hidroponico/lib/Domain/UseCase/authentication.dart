@@ -84,8 +84,8 @@ class LocalDataSource {
       return Future.value(false);
     }
 
-    if (userValues["mail"] == user.mail &&
-        userValues["password"] == user.password) {
+    if (userValues[0]["mail"] == user.mail &&
+        userValues[0]["password"] == user.password) {
       _mail = user.mail;
       return Future.value(true);
     }
@@ -97,10 +97,12 @@ class LocalDataSource {
     return _mail;
   }
 
-  Future<User> getUserInfo(String mail) async {
+  /*Future<User> getUserInfo(String mail) async {
     final db = await database;
     final maps =
         await db.rawQuery("Select * from Users where mail = ?", [mail]);
+
+    print("Charlie ${maps[0]['mail'].runtimeType}");
 
     User user = User(
         mail: maps[0]['mail'] as String,
@@ -108,5 +110,5 @@ class LocalDataSource {
         lastName: maps[0]['LastName'] as String,
         password: maps[0]['Password'] as String);
     return user;
-  }
+  }*/
 }

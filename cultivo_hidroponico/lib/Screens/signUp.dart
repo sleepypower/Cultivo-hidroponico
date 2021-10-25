@@ -30,7 +30,6 @@ class _SignUpState extends State<SignUp> {
 
   Future<void> _verifyEmail(String mail) async {
     User user = User(mail: mail, firstName: "", lastName: "", password: "");
-    await Future.delayed(Duration(seconds: 5));
     bool exists = await authenticationController.database.checkUserExists(user);
     if (exists) {
       _mailTaken = true;
@@ -91,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                     alignment: Alignment.center,
                     child: SizedBox(
                         width: SizeConfig.blockSizeHorizontal! * 72,
-                        height: SizeConfig.blockSizeVertical! * 70,
+                        height: SizeConfig.blockSizeVertical! * 72,
                         child: Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -174,7 +173,9 @@ class _SignUpState extends State<SignUp> {
 
                                     final form = _formKey.currentState;
                                     form!.save();
+                                    setState() {
 
+                                    };
                                     await _verifyEmail(
                                         _userEmailController.text);
                                     print("not validated yet!");
@@ -220,10 +221,15 @@ class _SignUpState extends State<SignUp> {
                                                   Radius.circular(8))),
                                           child: Center(
                                               child: authController.loading
-                                                  ? CircularProgressIndicator(
-                                                      color: Colors.white,
-                                                      strokeWidth: 3,
-                                                    )
+                                                  ? SizedBox(
+                                                height: SizeConfig.blockSizeVertical! * 3,
+                                                    width: SizeConfig.blockSizeVertical! * 3,
+                                                    child: CircularProgressIndicator(
+                                                        color: Colors.white,
+                                                        strokeWidth: 2,
+
+                                                      ),
+                                                  )
                                                   : Text(
                                                       "Join",
                                                       style: GoogleFonts.roboto(

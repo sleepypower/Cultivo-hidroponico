@@ -5,6 +5,7 @@ import 'package:cultivo_hidroponico/Widgets/roundedTextInput.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'dashboard.dart';
 
@@ -18,9 +19,21 @@ class _LogInState extends State<LogIn> {
 
   var _userPasswordController = TextEditingController();
 
-  final authController = Get.find<AuthenticationController>();
+  final authenticationController = Get.find<AuthenticationController>();
 
   final _formKey = GlobalKey<FormState>();
+
+  String _mailTakenResponse = "";
+
+  Future<void> _verifyEmail(String mail) async {
+    User user = User(mail: mail, firstName: "", lastName: "", password: "");
+    bool exists = await authenticationController.database.checkUserExists(user);
+    if (!exists) {
+      _mailTakenResponse = "This mail is not registered.";
+    } else {
+      _mailTakenResponse = "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +154,7 @@ class _LogInState extends State<LogIn> {
                                           if (!value!.contains("@")) {
                                             return "Please enter a valid email";
                                           } else {
-                                            return null;
+                                            return _mailTakenResponse != "" ? _mailTakenResponse : null;
                                           }
                                         },
                                       ),
@@ -185,49 +198,78 @@ class _LogInState extends State<LogIn> {
                                         height:
                                             SizeConfig.blockSizeVertical! * 1.5,
                                       ),
-                                      TextButton(
-                                          key: Key('loginSubmit'),
-                                          child: Text("Join".toUpperCase(),
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white)),
-                                          style: ButtonStyle(
-                                              overlayColor:
-                                                  MaterialStateProperty.all<Color>(
-                                                      Colors.transparent),
-                                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                                  EdgeInsets.all(15)),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<Color>(
-                                                      Color(0xff32B768)),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(30.0),
-                                                      side: BorderSide(color: Color(0xff32B768))))),
-                                          onPressed: () async {
-                                            // Dismiss the keyboard
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                      GestureDetector(
+                                        key: Key('logInSubmit'),
+                                        onTap: () async {
+                                          // Dismiss the keyboard
+                                          FocusScope.of(context)
+                                              .requestFocus(FocusNode());
 
-                                            final form = _formKey.currentState;
-                                            form!.save();
-                                            if (form.validate()) {
-                                              User user = User(
-                                                  mail:
-                                                      _userEmailController.text,
-                                                  firstName: "",
-                                                  lastName: "",
-                                                  password:
-                                                      _userPasswordController
-                                                          .text);
-                                              bool logged = await authController
-                                                  .login(user);
-                                              if (logged) {
-                                                Get.off(Dashboard());
-                                              }
+                                          final form = _formKey.currentState;
+                                          form!.save();
+                                          await _verifyEmail(
+                                              _userEmailController.text);
+                                          if (form.validate()) {
+                                            User user = User(
+                                                mail:
+                                                _userEmailController.text,
+                                                firstName: "",
+                                                lastName: "",
+                                                password:
+                                                _userPasswordController
+                                                    .text);
+                                            bool logged = await authenticationController
+                                                .login(user);
+                                            if (logged) {
+                                              Get.off(Dashboard());
+                                            } else {
+                                              _mailTakenResponse = "Email and password don't match";
+                                              form.validate();
                                             }
-                                          }),
+                                          }
+                                        },
+                                        child: GetX<AuthenticationController>(
+                                            builder: (authController) {
+                                              print(
+                                                  "Auth val is ${authController.loading}");
+                                              String buttonText = "Join";
+
+                                              if (authController.loading) {
+                                                buttonText = "";
+                                              } else {
+                                                buttonText = "Join";
+                                              }
+                                              return SizedBox(
+                                                width: SizeConfig.blockSizeVertical! * 13,
+                                                height: SizeConfig.blockSizeVertical! * 5,
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Color(0xff32B768),
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(20))),
+                                                    child: Center(
+                                                        child: authController.loading
+                                                            ? SizedBox(
+                                                          height: SizeConfig.blockSizeVertical! * 3,
+                                                          width: SizeConfig.blockSizeVertical! * 3,
+                                                          child: CircularProgressIndicator(
+                                                            color: Colors.white,
+                                                            strokeWidth: 2,
+
+                                                          ),
+                                                        )
+                                                            : Text(
+                                                          "Join",
+                                                          style: GoogleFonts.roboto(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                              FontWeight.bold,
+                                                              color: Colors.white),
+                                                        ))),
+                                              );
+                                            }),
+                                      ),
+
                                       SizedBox(
                                         height:
                                             SizeConfig.blockSizeVertical! * 1.5,
@@ -281,3 +323,48 @@ class _LogInState extends State<LogIn> {
     );
   }
 }
+
+/*
+TextButton(
+key: Key('loginSubmit'),
+child: Text("Join".toUpperCase(),
+style: TextStyle(
+fontSize: 14,
+color: Colors.white)),
+style: ButtonStyle(
+overlayColor:
+MaterialStateProperty.all<Color>(
+Colors.transparent),
+padding: MaterialStateProperty.all<EdgeInsets>(
+EdgeInsets.all(15)),
+backgroundColor:
+MaterialStateProperty.all<Color>(
+Color(0xff32B768)),
+shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+RoundedRectangleBorder(
+borderRadius:
+BorderRadius.circular(30.0),
+side: BorderSide(color: Color(0xff32B768))))),
+onPressed: () async {
+// Dismiss the keyboard
+FocusScope.of(context)
+.requestFocus(FocusNode());
+
+final form = _formKey.currentState;
+form!.save();
+if (form.validate()) {
+User user = User(
+mail:
+_userEmailController.text,
+firstName: "",
+lastName: "",
+password:
+_userPasswordController
+    .text);
+bool logged = await authenticationController
+    .login(user);
+if (logged) {
+Get.off(Dashboard());
+}
+}
+}),*/

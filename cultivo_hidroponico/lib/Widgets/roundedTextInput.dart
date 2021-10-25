@@ -11,6 +11,7 @@ class TextRoundedForm extends StatelessWidget {
   var textController;
   var maxLen;
 
+
   /// Constructor for the class
   ///
   /// If max len is set to 0, then there is no maximum length of input characters.
@@ -45,6 +46,7 @@ class TextRoundedForm extends StatelessWidget {
       child: SizedBox(
           width: SizeConfig.blockSizeVertical! * 27,
           child: TextFormField(
+
               maxLength: maxLen,
               maxLengthEnforcement: doMaxLen,
               autovalidateMode: AutovalidateMode.disabled,
@@ -52,12 +54,15 @@ class TextRoundedForm extends StatelessWidget {
               controller: textController,
               decoration: InputDecoration(
                   counterText: '',
+                  hintText: "${this.text}",
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
                   ),
                   filled: true,
                   hintStyle: TextStyle(color: Color(0xFF808080)),
-                  hintText: "${this.text}",
+
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                 fillColor: Colors.white70,
                   suffixIcon: textController.text != "" ?IconButton(
                     onPressed: textController.clear,

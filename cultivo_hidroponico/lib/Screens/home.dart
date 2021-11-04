@@ -79,7 +79,7 @@ class Home extends StatelessWidget {
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

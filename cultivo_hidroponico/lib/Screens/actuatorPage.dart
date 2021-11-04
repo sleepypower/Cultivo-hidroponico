@@ -29,7 +29,7 @@ class ActuatorPage extends StatelessWidget {
                     "Actuators",
                     style: GoogleFonts.roboto(
                         fontSize: 35,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         color: Color(0xff606964)),
                   ),
                 ),
@@ -72,7 +72,7 @@ class ActuatorPage extends StatelessWidget {
                               "Water valve",
                               style: GoogleFonts.roboto(
                                   fontSize: 22,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w500,
                                   color: Color(0xff606964)),
                             ),
                           ],
@@ -122,7 +122,7 @@ class ActuatorPage extends StatelessWidget {
                               "Light switch",
                               style: GoogleFonts.roboto(
                                   fontSize: 22,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w500,
                                   color: Color(0xff606964)),
                             ),
                           ],

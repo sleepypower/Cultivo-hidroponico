@@ -179,13 +179,13 @@ class indicatorItem extends StatelessWidget {
                     Icon(
                       icon_data,
                       color: iconColor,
-                      size: 50,
+                      size: 45,
                     ),
                     Text(
                       "$indicatorValue",
                       style: GoogleFonts.roboto(
                           fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                           color: color),
                     )
                   ],
@@ -193,7 +193,7 @@ class indicatorItem extends StatelessWidget {
                 Text(
                   "${this.indicatorName}",
                   style: GoogleFonts.roboto(
-                      fontSize: 22, fontWeight: FontWeight.bold, color: color),
+                      fontSize: 18, fontWeight: FontWeight.normal, color: color),
                 )
               ],
             )

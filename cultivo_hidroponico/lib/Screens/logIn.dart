@@ -23,6 +23,8 @@ class _LogInState extends State<LogIn> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool showPassword = false;
+
   String _mailTakenResponse = "";
 
   Future<void> _verifyEmail(String mail) async {
@@ -164,19 +166,47 @@ class _LogInState extends State<LogIn> {
                                         height:
                                             SizeConfig.blockSizeVertical! * 5,
                                       ),
-                                      TextRoundedForm(
-                                          text: "Password",
-                                          maxLen: 0,
-                                          textController:
-                                              _userPasswordController,
-                                          key: Key("loginPasswordText"),
-                                          validator: (value) {
-                                            if (value!.length < 6) {
-                                              return "Password length must be longer than 6 characters";
-                                            } else {
-                                              return null;
-                                            }
-                                          }),
+                                      Container(
+                                          decoration: BoxDecoration(),
+                                          child: SizedBox(
+                                              width:
+                                              SizeConfig.blockSizeVertical! * 27,
+                                              child: TextFormField(
+                                                autovalidateMode:
+                                                AutovalidateMode.disabled,
+                                                controller: _userPasswordController,
+                                                obscureText: !showPassword,
+                                                decoration: InputDecoration(
+                                                    counterText: '',
+                                                    hintText: "Password",
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(6.0),
+                                                    ),
+                                                    filled: true,
+                                                    hintStyle: TextStyle(
+                                                        color: Color(0xFF808080)),
+                                                    //floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                    fillColor: Colors.white70,
+                                                    suffixIcon: IconButton(
+                                                        onPressed: () {
+                                                          // Update the state i.e. toogle the state of passwordVisible variable
+                                                          setState(() {
+                                                            showPassword = !showPassword;
+                                                          });
+                                                        },
+                                                        icon: Icon(showPassword
+                                                            ? Icons.visibility
+                                                            : Icons.visibility_off))),
+                                                validator: (value) {
+                                                  if (value!.length < 6) {
+                                                    return "Password length must be longer than 6 characters";
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                },
+                                              ))),
+
                                       SizedBox(
                                         height:
                                             SizeConfig.blockSizeVertical! * 2.5,

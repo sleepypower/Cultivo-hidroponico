@@ -1,10 +1,16 @@
 import 'package:cultivo_hidroponico/Config/ScreenAttributes.dart';
+import 'package:cultivo_hidroponico/Domain/Controllers/AuthenticationController.dart';
 import 'package:cultivo_hidroponico/Domain/UseCase/authentication.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 class Home extends StatelessWidget {
+
+  AuthenticationController authenticationController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,15 +47,19 @@ class Home extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              'David',
-                              style: GoogleFonts.roboto(
-                                  textStyle:
+                            child: GetX<AuthenticationController>(
+                              builder: (authenticationController) {
+                                return Text(
+                                  "${authenticationController.currentUser.firstName}",
+                                  style: GoogleFonts.roboto(
+                                      textStyle:
                                       Theme.of(context).textTheme.headline4,
-                                  fontSize: 38,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff32B768)),
-                            ),
+                                      fontSize: 38,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff32B768)),
+                                );
+                              },
+                            )
                           ),
                         ),
                       ],
@@ -147,8 +157,17 @@ class indicatorItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-            color: Color(0xffF1F3F2),
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            color: Colors.white70, //Color(0xffF1F3F2),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            boxShadow: [
+        BoxShadow(
+        color: Colors.grey.withOpacity(0.2),
+        spreadRadius: 5,
+        blurRadius: 7,
+        offset: Offset(0, 3), // changes position of shadow
+      ),
+      ],
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

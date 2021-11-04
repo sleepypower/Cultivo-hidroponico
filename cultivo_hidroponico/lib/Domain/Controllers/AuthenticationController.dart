@@ -8,6 +8,15 @@ class AuthenticationController extends GetxController {
   final _internalStorage = new FlutterSecureStorage();
   var database = LocalDataSource();
   var _loading = false.obs;
+  var _currentUser = User(mail: "", firstName: "", lastName: "", password: "").obs;
+
+  Future<void> currentUserName() async {
+    _currentUser.value = await database.getUserInfo(_currentUser.value.mail);
+  }
+
+  User get currentUser  {
+    return _currentUser.value;
+  }
 
   bool get loading {
     return _loading.value;
@@ -17,19 +26,31 @@ class AuthenticationController extends GetxController {
     _loading.value = newVal;
   }
 
+  Future<void> updateCurrentUser(String mail) async {
+    User newUser = await database.getUserInfo(mail);
+    _currentUser.update((user) {
+      user!.mail = newUser.mail;
+      user.firstName = newUser.firstName;
+      user.lastName = newUser.lastName;
+    });
+  }
+
   Future<bool> login(User user) async {
     // check if user is in memory
-    //database.getUserInfo(user.mail);
+
     _loading.value = true;
     await Future.delayed(Duration(seconds: 1));
     bool loggedIn = await database.logUser(user);
-    /*if (loggedIn)
+    print("loggedIn value: ${loggedIn}");
+    if (loggedIn)
       {
-        await _internalStorage.write(key: "logged", value: "true");
-        await _internalStorage.write(key: "mail", value: "true");
-      }*/
+        await updateCurrentUser(user.mail);
+
+        /*await _internalStorage.write(key: "logged", value: "true");
+        await _internalStorage.write(key: "mail", value: "true");*/
+      }
     //print("Memory usermail ${localMail}, user signUp mail $mail, ${(localMail == mail)}");
-    _loading.value = false;_loading.value = false;
+    _loading.value = false;
     return loggedIn;
   }
 

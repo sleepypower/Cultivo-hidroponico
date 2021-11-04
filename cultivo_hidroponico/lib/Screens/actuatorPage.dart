@@ -1,10 +1,14 @@
 import 'package:cultivo_hidroponico/Config/ScreenAttributes.dart';
+import 'package:cultivo_hidroponico/Domain/Controllers/AuthenticationController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 class ActuatorPage extends StatelessWidget {
   bool _switchValue = true;
+  AuthenticationController authenticationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +36,34 @@ class ActuatorPage extends StatelessWidget {
                 SizedBox(
                   height: SizeConfig.safeBlockVertical! * 3,
                 ),
-
                 Container(
                     width: double.infinity,
                     height: SizeConfig.safeBlockVertical! * 15,
                     decoration: BoxDecoration(
                         color: Color(0xffCCE9F6),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xffCCE9F6).withOpacity(0.3),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Column(
                           children: [
                             Container(
-                              child: Icon(Icons.flash_on, color: Color(0xff606964)),
+                              child: Icon(Icons.flash_on,
+                                  color: Color(0xff606964)),
                               height: SizeConfig.safeBlockVertical! * 5,
                               width: SizeConfig.safeBlockVertical! * 5,
                               decoration: BoxDecoration(
+
                                 color: Color(0xff6ECEFF),
                                 shape: BoxShape.circle,
                               ),
@@ -64,7 +79,10 @@ class ActuatorPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         ),
-                        Text("Todo Button")
+                        TextButton(
+                            onPressed: () async {
+                            },
+                            child: Text("Todo Button"))
                       ],
                     )),
                 SizedBox(
@@ -75,14 +93,24 @@ class ActuatorPage extends StatelessWidget {
                     height: SizeConfig.safeBlockVertical! * 15,
                     decoration: BoxDecoration(
                         color: Color(0xffFFF59E),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xffFFF59E).withOpacity(0.3),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ]
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Column(
                           children: [
                             Container(
-                              child: Icon(Icons.lightbulb, color: Color(0xff606964)),
+                              child: Icon(Icons.lightbulb,
+                                  color: Color(0xff606964)),
                               height: SizeConfig.safeBlockVertical! * 5,
                               width: SizeConfig.safeBlockVertical! * 5,
                               decoration: BoxDecoration(
@@ -104,7 +132,6 @@ class ActuatorPage extends StatelessWidget {
                         Text("Todo Button")
                       ],
                     )),
-
               ],
             )),
       ),

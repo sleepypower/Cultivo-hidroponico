@@ -97,18 +97,27 @@ class LocalDataSource {
     return _mail;
   }
 
-  /*Future<User> getUserInfo(String mail) async {
+  Future<User> getUserInfo(String mail) async {
     final db = await database;
     final maps =
-        await db.rawQuery("Select * from Users where mail = ?", [mail]);
+        await db.rawQuery("Select mail, first_name, last_name from Users where mail = ?", [mail]);
+    if (maps.isEmpty) {
+      print("charlie la lista esta vacia!");
+      return User(mail: "", firstName: "", lastName: "", password: "");
+    }
+    String firstName = maps[0]['first_name'] == null ? "" : maps[0]['first_name'] as String;
+    String lastName = maps[0]['last_name'] == null ? "" : maps[0]['last_name'] as String;
+    User user = User(mail: "", firstName: "", lastName: "", password: "");
 
-    print("Charlie ${maps[0]['mail'].runtimeType}");
-
-    User user = User(
+    user = User(
         mail: maps[0]['mail'] as String,
-        firstName: maps[0]['FirstName'] as String,
-        lastName: maps[0]['LastName'] as String,
-        password: maps[0]['Password'] as String);
+        firstName: firstName,
+        lastName: lastName,
+        password: "");
+
+    print(user);
+
     return user;
-  }*/
+  }
+
 }

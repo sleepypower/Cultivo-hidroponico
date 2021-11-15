@@ -20,7 +20,6 @@ class Dashboard extends StatelessWidget {
               children: [
                 ActuatorPage(),
                 Home(),
-
               ],
             ),
           ),

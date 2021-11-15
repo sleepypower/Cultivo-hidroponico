@@ -28,7 +28,7 @@ class _LogInState extends State<LogIn> {
   String _mailTakenResponse = "";
 
   Future<void> _verifyEmail(String mail) async {
-    User user = User(mail: mail, firstName: "", lastName: "", password: "");
+    UserModel user = UserModel(mail: mail, firstName: "", lastName: "", password: "");
     bool exists = await authenticationController.database.checkUserExists(user);
     if (!exists) {
       _mailTakenResponse = "This mail is not registered.";
@@ -169,35 +169,41 @@ class _LogInState extends State<LogIn> {
                                       Container(
                                           decoration: BoxDecoration(),
                                           child: SizedBox(
-                                              width:
-                                              SizeConfig.blockSizeVertical! * 27,
+                                              width: SizeConfig
+                                                      .blockSizeVertical! *
+                                                  27,
                                               child: TextFormField(
                                                 autovalidateMode:
-                                                AutovalidateMode.disabled,
-                                                controller: _userPasswordController,
+                                                    AutovalidateMode.disabled,
+                                                controller:
+                                                    _userPasswordController,
                                                 obscureText: !showPassword,
                                                 decoration: InputDecoration(
                                                     counterText: '',
                                                     hintText: "Password",
                                                     border: OutlineInputBorder(
                                                       borderRadius:
-                                                      BorderRadius.circular(6.0),
+                                                          BorderRadius.circular(
+                                                              6.0),
                                                     ),
                                                     filled: true,
                                                     hintStyle: TextStyle(
-                                                        color: Color(0xFF808080)),
+                                                        color:
+                                                            Color(0xFF808080)),
                                                     //floatingLabelBehavior: FloatingLabelBehavior.always,
                                                     fillColor: Colors.white70,
                                                     suffixIcon: IconButton(
                                                         onPressed: () {
                                                           // Update the state i.e. toogle the state of passwordVisible variable
                                                           setState(() {
-                                                            showPassword = !showPassword;
+                                                            showPassword =
+                                                                !showPassword;
                                                           });
                                                         },
                                                         icon: Icon(showPassword
                                                             ? Icons.visibility
-                                                            : Icons.visibility_off))),
+                                                            : Icons
+                                                                .visibility_off))),
                                                 validator: (value) {
                                                   if (value!.length < 6) {
                                                     return "Password length must be longer than 6 characters";
@@ -206,7 +212,6 @@ class _LogInState extends State<LogIn> {
                                                   }
                                                 },
                                               ))),
-
                                       SizedBox(
                                         height:
                                             SizeConfig.blockSizeVertical! * 2.5,
@@ -242,7 +247,7 @@ class _LogInState extends State<LogIn> {
                                           await _verifyEmail(
                                               _userEmailController.text);
                                           if (form.validate()) {
-                                            User user = User(
+                                            UserModel user = UserModel(
                                                 mail: _userEmailController.text,
                                                 firstName: "",
                                                 lastName: "",

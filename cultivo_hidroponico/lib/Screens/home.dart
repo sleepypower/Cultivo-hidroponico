@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
 class Home extends StatelessWidget {
-
   AuthenticationController authenticationController = Get.find();
 
   @override
@@ -46,21 +45,21 @@ class Home extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
                           child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: GetX<AuthenticationController>(
-                              builder: (authenticationController) {
-                                return Text(
-                                  "${authenticationController.currentUser.firstName}",
-                                  style: GoogleFonts.roboto(
-                                      textStyle:
-                                      Theme.of(context).textTheme.headline4,
-                                      fontSize: 38,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff32B768)),
-                                );
-                              },
-                            )
-                          ),
+                              alignment: Alignment.centerLeft,
+                              child: GetX<AuthenticationController>(
+                                builder: (authenticationController) {
+                                  return Text(
+                                    "${authenticationController.currentUser.firstName}",
+                                    style: GoogleFonts.roboto(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 38,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff32B768)),
+                                  );
+                                },
+                              )),
                         ),
                       ],
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -157,16 +156,16 @@ class indicatorItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-            color: Colors.white70, //Color(0xffF1F3F2),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            boxShadow: [
-        BoxShadow(
-        color: Colors.grey.withOpacity(0.2),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: Offset(0, 3), // changes position of shadow
-      ),
-      ],
+          color: Colors.white70,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -193,7 +192,9 @@ class indicatorItem extends StatelessWidget {
                 Text(
                   "${this.indicatorName}",
                   style: GoogleFonts.roboto(
-                      fontSize: 18, fontWeight: FontWeight.normal, color: color),
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                      color: color),
                 )
               ],
             )

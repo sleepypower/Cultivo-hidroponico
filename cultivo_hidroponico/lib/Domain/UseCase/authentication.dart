@@ -31,7 +31,7 @@ class LocalDataSource {
         'CREATE TABLE Users_Sensor(id_sensor, mail_user, foreign key (id_sensor) references sensor(id), foreign key (mail_user) references Users(mail))');
   }
 
-  Future<bool> checkUserExists(User user) async {
+  Future<bool> checkUserExists(UserModel user) async {
     final db = await database;
     try {
       var mailMap = await db
@@ -49,7 +49,7 @@ class LocalDataSource {
     await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }*/
 
-  Future<bool> signUser(User user) async {
+  Future<bool> signUser(UserModel user) async {
     if (await checkUserExists(user)) {
       return false;
     }
@@ -66,7 +66,7 @@ class LocalDataSource {
     }
   }
 
-  Future<bool> logUser(User user) async {
+  Future<bool> logUser(UserModel user) async {
     final userExists = await checkUserExists(user);
     if (!userExists) {
       _mail = "";
@@ -97,19 +97,19 @@ class LocalDataSource {
     return _mail;
   }
 
-  Future<User> getUserInfo(String mail) async {
+  Future<UserModel> getUserInfo(String mail) async {
     final db = await database;
     final maps =
         await db.rawQuery("Select mail, first_name, last_name from Users where mail = ?", [mail]);
     if (maps.isEmpty) {
       print("charlie la lista esta vacia!");
-      return User(mail: "", firstName: "", lastName: "", password: "");
+      return UserModel(mail: "", firstName: "", lastName: "", password: "");
     }
     String firstName = maps[0]['first_name'] == null ? "" : maps[0]['first_name'] as String;
     String lastName = maps[0]['last_name'] == null ? "" : maps[0]['last_name'] as String;
-    User user = User(mail: "", firstName: "", lastName: "", password: "");
+    UserModel user = UserModel(mail: "", firstName: "", lastName: "", password: "");
 
-    user = User(
+    user = UserModel(
         mail: maps[0]['mail'] as String,
         firstName: firstName,
         lastName: lastName,

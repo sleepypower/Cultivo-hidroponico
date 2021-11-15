@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   String _mailTakenResponse = "";
 
   Future<void> _verifyEmail(String mail) async {
-    User user = User(mail: mail, firstName: "", lastName: "", password: "");
+    UserModel user = UserModel(mail: mail, firstName: "", lastName: "", password: "");
     bool exists = await authenticationController.database.checkUserExists(user);
     if (exists) {
       _mailTaken = true;
@@ -211,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                                         _userEmailController.text);
 
                                     if (form.validate()) {
-                                      User user = User(
+                                      UserModel user = UserModel(
                                           mail: _userEmailController.text,
                                           firstName:
                                               _userFirstNameController.text,

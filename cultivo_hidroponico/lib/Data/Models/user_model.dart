@@ -1,6 +1,6 @@
 
-class User {
-  User({
+class UserModel {
+  UserModel({
     required this.mail,
     required this.firstName,
     required this.lastName,
@@ -25,7 +25,5 @@ class User {
   String toString() {
     return 'User{mail: $mail, first_name: $firstName, last_name: $lastName}';
   }
-
-
 
 }
